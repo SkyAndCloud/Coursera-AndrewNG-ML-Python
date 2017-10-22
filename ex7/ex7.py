@@ -34,6 +34,8 @@ from findClosestCentroids import findClosestCentroids
 from computeCentroids import computeCentroids
 from runkMeans import runkMeans
 from kMeansInitCentroids import kMeansInitCentroids
+import sys
+sys.path.append('..')
 from show import show
 
 print 'Finding closest centroids.'
@@ -48,7 +50,7 @@ initial_centroids = np.array([[3, 3], [6, 2], [8, 5]])
 
 # Find the closest centroids for the examples using the
 # initial_centroids
-val, idx = findClosestCentroids(X, initial_centroids)
+idx = findClosestCentroids(X, initial_centroids)
 
 print 'Closest centroids for the first 3 examples:'
 print idx[0:3].tolist()
@@ -156,7 +158,7 @@ raw_input("Program paused. Press Enter to continue...")
 print 'Applying K-Means to compress an image.'
 
 # Find closest cluster members
-_, idx = findClosestCentroids(X, centroids)
+idx = findClosestCentroids(X, centroids)
 
 # Essentially, now we have represented the image X as in terms of the
 # indices in idx. 

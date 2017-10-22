@@ -18,7 +18,7 @@ def recoverData(Z, U, K):
     #               Notice that U(j, 1:K) is a row vector.
     #
 
-
+    X_rec = Z.dot(U[:,:K].T)
     # =============================================================
 
     return X_rec

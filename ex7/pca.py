@@ -20,6 +20,8 @@ def pca(X):
     #       number of examples).
     #
 
-
+    sigma = X.T.dot(X) / float(m)
+    U, S, V = np.linalg.svd(sigma)
+  
 # =========================================================================
-    return U, S, V
+    return U, np.diag(S), V

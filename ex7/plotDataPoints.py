@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-
+import sys
+sys.path.append('..')
 from show import show
 
 def plotDataPoints(X, idx):

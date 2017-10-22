@@ -24,7 +24,8 @@ import scipy.io
 import scipy.misc
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-
+import sys
+sys.path.append('..')
 from featureNormalize import featureNormalize
 from pca import pca
 from projectData import projectData
@@ -34,7 +35,7 @@ from runkMeans import runkMeans
 from plotDataPoints import plotDataPoints
 from ex3.displayData import displayData
 from show import show
-
+from drawLine import drawLine
 ## ================== Part 1: Load Example Dataset  ===================
 #  We start this exercise by using a small dataset that is easily to
 #  visualize
@@ -217,7 +218,7 @@ sel = np.floor(np.random.random(1000) * len(X)) + 1
 #  Visualize the data and centroid memberships in 3D
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-Xs = np.array([X[s] for s in sel])
+Xs = np.array([X[int(s)] for s in sel])
 xs = Xs[:, 0]
 ys = Xs[:, 1]
 zs = Xs[:, 2]
@@ -243,8 +244,8 @@ Z = projectData(X_norm, U, 2)
 
 # Plot in 2D
 plt.figure()
-zs = np.array([Z[s] for s in sel])
-idxs = np.array([idx[s] for s in sel])
+zs = np.array([Z[int(s)] for s in sel])
+idxs = np.array([idx[int(s)] for s in sel])
 
 # plt.scatter(zs[:,0], zs[:,1])
 plotDataPoints(zs, idxs)

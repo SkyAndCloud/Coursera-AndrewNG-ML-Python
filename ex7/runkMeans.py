@@ -36,7 +36,7 @@ def runkMeans(X, initial_centroids, max_iters, plot_progress=False):
         print 'K-Means iteration %d/%d...' % (i, max_iters)
 
         # For each example in X, assign it to the closest centroid
-        _, idx = findClosestCentroids(X, centroids)
+        idx = findClosestCentroids(X, centroids)
     
         # Optionally, plot progress here
         if plot_progress:

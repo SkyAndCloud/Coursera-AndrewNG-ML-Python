@@ -15,8 +15,7 @@ def computeCentroids(X, idx, K):
     m, n = X.shape
 
 # You need to return the following variables correctly.
-    centroids = []
-
+    centroids = np.zeros((K, X.shape[1]))
 
 # ====================== YOUR CODE HERE ======================
 # Instructions: Go over every centroid and compute mean of all points that
@@ -26,8 +25,18 @@ def computeCentroids(X, idx, K):
 #
 # Note: You can use a for-loop over the centroids to compute this.
 # 
-
+    idx_count = np.bincount(idx)
+    for k in xrange(K):
+        if k < len(idx_count):
+            centroids[k] = np.sum(X[idx == k,:], axis=0) / float(idx_count[k])
 
 # =============================================================
 
     return centroids
+
+# if __name__ == '__main__':
+#     print computeCentroids(
+#         np.array([[1, 2, 3, 4], [4, 3, 2, 1]]),
+#         np.array([0, 0]),
+#         2
+#     )
