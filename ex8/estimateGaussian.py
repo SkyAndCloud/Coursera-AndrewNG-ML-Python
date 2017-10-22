@@ -17,8 +17,8 @@ def estimateGaussian(X):
     #               the data for the i-th feature and sigma2(i)
     #               should contain variance of the i-th feature.
     #
-
-
+    mu = np.mean(X, axis=0)
+    sigma2 = np.var(X, axis=0)
 
 # =============================================================
 

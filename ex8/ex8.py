@@ -3,7 +3,8 @@ use('TkAgg')
 import numpy as np
 import scipy.io
 import matplotlib.pyplot as plt
-
+import sys
+sys.path.append('..')
 from estimateGaussian import estimateGaussian
 from selectThreshold import selectThreshold
 from multivariateGaussian import multivariateGaussian
@@ -130,5 +131,11 @@ print 'Best F1 on Cross Validation Set:  %f' % F1
 print '# Outliers found: %d' % sum(p < epsilon)
 print '   (you should see a value epsilon of about 1.38e-18)'
 
+#  Find the outliers in the training set and plot the
+outliers = np.where(p < epsilon, True, False)
 
+#  Draw a red circle around those outliers
+plt.plot(X[outliers, 0], X[outliers, 1], 'ro', lw=2, markersize=10, fillstyle='none', markeredgewidth=1)
+show()
 
+raw_input("Program paused. Press Enter to continue...")

@@ -20,6 +20,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io
 from scipy.optimize import minimize
+import sys
+sys.path.append('..')
 from show import show
 
 ## =============== Part 1: Loading movie ratings dataset ================

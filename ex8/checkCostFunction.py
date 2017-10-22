@@ -1,4 +1,6 @@
 import numpy as np
+import sys
+sys.path.append('..')
 from ex4.computeNumericalGradient import computeNumericalGradient
 from cofiCostFunc import cofiCostFunc
 
@@ -39,7 +41,6 @@ def checkCostFunction(Lambda=0):
     numgrad = computeNumericalGradient(costFunc_w, params)
 
     cost, grad = cofiCostFunc(params, Y, R, num_users, num_movies, num_features, Lambda)
-
 
     print np.column_stack((numgrad, grad))
 
