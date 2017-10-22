@@ -61,38 +61,36 @@ def processEmail(email_contents):
 # Process file
     l = 0
 
-# Remove any non alphanumeric characters
-    rx = re.compile('[^a-zA-Z0-9 ]')
-    email_contents = rx.sub('', email_contents).split()
+# Tokenize and also get rid of any punctuation
+    email_contents = re.split('[' + re.escape(' @$/#.-:&*+=[]?!(){},''">_<#') \
+                                       + chr(10) + chr(13) + ']', email_contents)
 
-    for str in email_contents:
-
-        # Tokenize and also get rid of any punctuation
-        # str = re.split('[' + re.escape(' @$/#.-:&*+=[]?!(){},''">_<#')
-        #                                + chr(10) + chr(13) + ']', str)
+    for s in email_contents:
+    # Remove any non alphanumeric characters
+        s = re.sub('[^a-zA-Z0-9]', '', s)
 
         # Stem the word
         # (the porterStemmer sometimes has issues, so we use a try catch block)
         try:
-            str = porterStemmer(str.strip())
+            s = porterStemmer(s.strip())
         except:
-            str = ''
+            s = ''
             continue
 
         # Skip the word if it is too short
-        if len(str) < 1:
+        if len(s) < 1:
            continue
 
         # Look up the word in the dictionary and add to word_indices if
         # found
         # ====================== YOUR CODE HERE ======================
-        # Instructions: Fill in this function to add the index of str to
+        # Instructions: Fill in this function to add the index of s to
         #               word_indices if it is in the vocabulary. At this point
         #               of the code, you have a stemmed word from the email in
-        #               the variable str. You should look up str in the
+        #               the variable s. You should look up s in the
         #               vocabulary list (vocabList). If a match exists, you
         #               should add the index of the word to the word_indices
-        #               vector. Concretely, if str = 'action', then you should
+        #               vector. Concretely, if s = 'action', then you should
         #               look up the vocabulary list to find where in vocabList
         #               'action' appears. For example, if vocabList{18} =
         #               'action', then, you should add 18 to the word_indices
@@ -104,19 +102,21 @@ def processEmail(email_contents):
         # Note: You can use strcmp(str1, str2) to compare two strings (str1 and
         #       str2). It will return 1 only if the two strings are equivalent.
         #
-
+        for index, item in enumerate(vocabList):
+            if item == s:
+                word_indices.append(index)
 
 
 
         # =============================================================
 
         # Print to screen, ensuring that the output lines are not too long
-        if (l + len(str) + 1) > 78:
-            print str
+        if (l + len(s) + 1) > 78:
+            print s
             l = 0
         else:
-            print str,
-            l = l + len(str) + 1
+            print s,
+            l = l + len(s) + 1
 
 # Print footer
     print '\n========================='

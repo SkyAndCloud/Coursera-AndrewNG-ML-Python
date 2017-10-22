@@ -1,5 +1,5 @@
 from numpy import asfortranarray, squeeze, asarray
-
+from sigmoid import sigmoid
 from gradientFunction import gradientFunction
 
 
@@ -16,7 +16,8 @@ def gradientFunctionReg(theta, X, y, Lambda):
 # Instructions: Compute the gradient of a particular choice of theta.
 #               Compute the partial derivatives and set grad to the partial
 #               derivatives of the cost w.r.t. each parameter in theta
-
+    grad = (X.T.dot(sigmoid(X.dot(theta)) - y) + Lambda * theta) / float(m)
+    grad[0] -= Lambda * theta[0] / float(m)
 
 # =============================================================
 

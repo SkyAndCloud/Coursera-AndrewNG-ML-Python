@@ -24,7 +24,9 @@ def featureNormalize(X):
     #
     # Hint: You might find the 'mean' and 'std' functions useful.
     #
-
+    mu = np.mean(X, axis=0, keepdims=True)
+    std = np.std(X, axis=0, keepdims=True, dtype=np.float32)
+    X_norm = (X - mu) / std
 
 # ============================================================
 

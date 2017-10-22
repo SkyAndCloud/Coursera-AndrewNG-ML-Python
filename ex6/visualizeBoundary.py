@@ -21,4 +21,4 @@ def visualizeBoundary(X, y, model):
 
     # Plot the SVM boundary
     #contour(X1, X2, vals, [0 0], 'Color', 'b')
-    plt.contour(X1, X2, vals, levels=[0.0, 0.0])
+    plt.contourf(X1, X2, vals, cmap=plt.cm.Paired, alpha=0.2)

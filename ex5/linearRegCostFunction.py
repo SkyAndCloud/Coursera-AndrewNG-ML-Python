@@ -14,8 +14,7 @@ def linearRegCostFunction(X, y, theta, Lambda):
 #
 #               You should set J to the cost and grad to the gradient.
 #
-
-
-# =========================================================================
-
+    J = (np.sum(np.square(X.dot(theta) - y)) + Lambda * np.sum(np.square(theta[1:]))) / float(2 * m)
+    grad = (X.T.dot(X.dot(theta) - y) + Lambda * np.concatenate([[0], theta[1:]])) / float(m)
     return J, grad
+# =========================================================================

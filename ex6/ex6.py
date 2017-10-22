@@ -24,7 +24,7 @@ from dataset3Params import dataset3Params
 from plotData import plotData
 from visualizeBoundary import visualizeBoundary
 from visualizeBoundaryLinear import visualizeBoundaryLinear
-
+from gaussianKernel import gaussianKernel
 ## =============== Part 1: Loading and Visualizing Data ================
 #  We start the exercise by first loading and visualizing the dataset. 
 #  The following code will load the dataset into your environment and plot
@@ -61,7 +61,7 @@ print 'Training Linear SVM ...'
 # boundary varies (e.g., try C = 1000)
 
 C = 1
-clf = svm.SVC(C=C, kernel='linear', tol=1e-3, max_iter=20)
+clf = svm.SVC(C=C, kernel='linear', tol=1e-3, max_iter=200)
 model = clf.fit(X, y)
 visualizeBoundaryLinear(X, y, model)
 
@@ -76,10 +76,10 @@ print 'Evaluating the Gaussian Kernel ...'
 x1 = np.array([1, 2, 1])
 x2 = np.array([0, 4, -1])
 sigma = 2
-# sim = gaussianKernel(x1, x2, sigma)
-#
-# print 'Gaussian Kernel between x1 = [1 2 1], x2 = [0 4 -1], sigma = %0.5f : ' \
-#        '\t%f\n(this value should be about 0.324652)\n' % (sigma, sim)
+sim = gaussianKernel(x1, x2, sigma)
+
+print 'Gaussian Kernel between x1 = [1 2 1], x2 = [0 4 -1], sigma = %0.5f : ' \
+       '\t%f\n(this value should be about 0.324652)\n' % (sigma, sim)
 
 raw_input("Program paused. Press Enter to continue...")
 
@@ -123,8 +123,8 @@ gamma = 1.0 / (2.0 * sigma ** 2)
 # convergence.
 
 clf = svm.SVC(C=C, kernel='rbf', tol=1e-3, max_iter=200, gamma=gamma)
-model = clf.fit(X, y)
-visualizeBoundary(X, y, model)
+clf.fit(X, y)
+visualizeBoundary(X, y, clf)
 
 raw_input("Program paused. Press Enter to continue...")
 
@@ -158,14 +158,33 @@ data = scipy.io.loadmat('ex6data3.mat')
 Xval = data['Xval']
 yval = data['yval'].flatten()
 
+def plot_svc(svc, X, y, h=0.02, pad=0.25):
+    from matplotlib import pyplot as plt
+    x_min, x_max = X[:, 0].min()-pad, X[:, 0].max()+pad
+    y_min, y_max = X[:, 1].min()-pad, X[:, 1].max()+pad
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    Z = svc.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    plt.contourf(xx, yy, Z, cmap=plt.cm.Paired, alpha=0.2)
+
+    plotData(X, y)
+    #plt.scatter(X[:,0], X[:,1], s=70, c=y, cmap=mpl.cm.Paired)
+    # Support vectors indicated in plot by vertical lines
+    sv = svc.support_vectors_
+    plt.scatter(sv[:,0], sv[:,1], c='k', marker='|', s=100, linewidths='1')
+    plt.xlim(x_min, x_max)
+    plt.ylim(y_min, y_max)
+    plt.xlabel('X1')
+    plt.ylabel('X2')
+    plt.show()
+    print('Number of support vectors: ', svc.support_.size)
+
 # Try different SVM Parameters here
 C, sigma = dataset3Params(X, y, Xval, yval)
 gamma = 1.0 / (2.0 * sigma ** 2)
 # Train the SVM
-
 clf = svm.SVC(C=C, kernel='rbf', tol=1e-3, max_iter=200, gamma=gamma)
-model = clf.fit(X, y)
-visualizeBoundary(X, y, model)
+clf.fit(X, y)
+plot_svc(clf, X, y)
 
 raw_input("Program paused. Press Enter to continue...")
-

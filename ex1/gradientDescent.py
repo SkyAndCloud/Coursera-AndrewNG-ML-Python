@@ -20,7 +20,7 @@ def gradientDescent(X, y, theta, alpha, num_iters):
         # Hint: While debugging, it can be useful to print out the values
         #       of the cost function (computeCost) and gradient here.
         #
-
+        theta -= alpha * (X.T.dot(X.dot(theta) - y)) / float(m)
 
         # ============================================================
 

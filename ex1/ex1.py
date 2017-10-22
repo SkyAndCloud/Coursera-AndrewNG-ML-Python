@@ -9,6 +9,8 @@ from gradientDescent import gradientDescent
 from computeCost import computeCost
 from warmUpExercise import warmUpExercise
 from plotData import plotData
+import sys
+sys.path.append('..')
 from show import show
 
 ## Machine Learning Online Class - Exercise 1: Linear Regression

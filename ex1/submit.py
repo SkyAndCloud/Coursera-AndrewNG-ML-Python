@@ -1,5 +1,7 @@
 import numpy as np
 
+import sys
+sys.path.append('..')
 from Submission import Submission
 from Submission import sprintf
 

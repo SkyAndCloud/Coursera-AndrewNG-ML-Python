@@ -15,5 +15,7 @@ def polyFeatures(X, p):
 # 
 
 # =========================================================================
-
+    for i in xrange(X.size):
+        for j in xrange(1, p + 1):
+            X_poly[i,j - 1] = np.power(X[i], j)
     return X_poly

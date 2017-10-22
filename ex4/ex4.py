@@ -18,7 +18,8 @@
 import numpy as np
 import scipy.io
 from scipy.optimize import minimize
-
+import sys
+sys.path.append('..')
 from ex3.displayData import displayData
 from ex3.predict import predict
 from nnCostFunction import nnCostFunction
@@ -189,10 +190,9 @@ print 'Training Neural Network... '
 #  You should also try different values of lambda
 Lambda = 1
 
-costFunc = lambda p: nnCostFunction(p, input_layer_size, hidden_layer_size, num_labels, X, y, Lambda)[0]
-gradFunc = lambda p: nnCostFunction(p, input_layer_size, hidden_layer_size, num_labels, X, y, Lambda)[1]
+costFunc = lambda p: nnCostFunction(p, input_layer_size, hidden_layer_size, num_labels, X, y, Lambda)
 
-result = minimize(costFunc, initial_nn_params, method='CG', jac=gradFunc, options={'disp': True, 'maxiter': 50.0})
+result = minimize(costFunc, initial_nn_params, method='CG', jac=True, options={'disp': True, 'maxiter': 50.0})
 nn_params = result.x
 cost = result.fun
 

@@ -1,16 +1,13 @@
 import numpy as np
 from scipy.optimize import minimize
-
 from lrCostFunction import lrCostFunction
 from ex2.gradientFunctionReg import gradientFunctionReg
-
 
 def oneVsAll(X, y, num_labels, Lambda):
     """trains multiple logistic regression classifiers and returns all
         the classifiers in a matrix all_theta, where the i-th row of all_theta
         corresponds to the classifier for label i
     """
-
 # Some useful variables
     m, n = X.shape
 
@@ -36,11 +33,12 @@ def oneVsAll(X, y, num_labels, Lambda):
 
     # Set Initial theta
     initial_theta = np.zeros((n + 1, 1))
-
+  
     # This function will return theta and the cost
-
-
-
+    for i in xrange(num_labels):
+        function_args = (X, (y % 10 == i).astype(int), Lambda)
+        theta = minimize(lrCostFunction, x0=initial_theta, args=function_args, options={'disp': True, 'maxiter': 1500}, method=None, jac=gradientFunctionReg)
+        all_theta[i,:] = theta.x
 # =========================================================================
 
     return all_theta

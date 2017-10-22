@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from gradientDescentMulti import gradientDescentMulti
 from normalEqn import normalEqn
 from featureNormalize import featureNormalize
+import sys
+sys.path.append('..')
 from show import show
 # ================ Part 1: Feature Normalization ================
 

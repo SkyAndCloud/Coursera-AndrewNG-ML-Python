@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from ex2.sigmoid import sigmoid
 
 def sigmoidGradient(z):
@@ -12,5 +14,6 @@ def sigmoidGradient(z):
 
 
 # =============================================================
-
+    a = sigmoid(z)
+    g = a * (1 - a)
     return g

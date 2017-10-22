@@ -1,5 +1,6 @@
 import numpy as np
-
+import sys
+sys.path.append('..')
 from ex2.sigmoid import sigmoid
 
 def predictOneVsAll(all_theta, X):
@@ -33,5 +34,6 @@ def predictOneVsAll(all_theta, X):
 
 
 # =========================================================================
-
+    a = sigmoid(X.dot(all_theta.T))
+    p = np.argmax(a, axis=1)
     return p + 1    # add 1 to offset index of maximum in A row

@@ -19,7 +19,7 @@ import numpy as np
 import scipy.io
 from sklearn import svm
 from collections import OrderedDict
-
+from dataset3Params import dataset3Params
 from processEmail import processEmail
 from emailFeatures import emailFeatures
 from getVocabList import getVocabList
@@ -76,7 +76,14 @@ y = data['y'].flatten()
 print 'Training Linear SVM (Spam Classification)'
 print '(this may take 1 to 2 minutes) ...'
 
-C = 0.1
+#Xval=X[:400]
+#yVal=y[:400]
+#C, sigma = dataset3Params(X, y, Xval, yVal)
+C=1.0
+sigma=10.0
+gamma = 1.0 / (2.0 * sigma ** 2)
+#clf = svm.SVC(C=C, kernel='rbf', tol=1e-3, max_iter=200, gamma=gamma)
+
 clf = svm.SVC(C=C, kernel='linear', tol=1e-3, max_iter=200)
 model = clf.fit(X, y)
 
@@ -98,7 +105,7 @@ print 'Evaluating the trained Linear SVM on a test set ...'
 
 p = model.predict(Xtest)
 
-print 'Test Accuracy: %f', np. mean(np.double(p == ytest)) * 100
+print 'Test Accuracy: %f', np.mean(np.double(p == ytest.flatten())) * 100
 
 
 ## ================= Part 5: Top Predictors of Spam ====================
@@ -107,7 +114,6 @@ print 'Test Accuracy: %f', np. mean(np.double(p == ytest)) * 100
 #  whether an email is spam or not. The following code finds the words with
 #  the highest weights in the classifier. Informally, the classifier
 #  'thinks' that these words are the most likely indicators of spam.
-#
 
 # Sort the weights and obtain the vocabulary list
 
@@ -134,7 +140,8 @@ print 'Program paused. Press enter to continue.'
 # Set the file to be read in (change this to spamSample2.txt,
 # emailSample1.txt or emailSample2.txt to see different predictions on
 # different emails types). Try your own emails as well!
-filename = 'spamSample1.txt'
+
+filename = 'emailSample2.txt'
 
 # Read and predict
 

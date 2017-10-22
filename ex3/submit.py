@@ -1,5 +1,6 @@
 import numpy as np
-
+import sys
+sys.path.append('..')
 from Submission import Submission
 from Submission import sprintf
 from lrCostFunction import lrCostFunction
@@ -7,6 +8,7 @@ from oneVsAll import oneVsAll
 from predictOneVsAll import predictOneVsAll
 from predict import predict
 from ex2.gradientFunctionReg import gradientFunctionReg
+import traceback
 
 homework = 'multi-class-classification-and-neural-networks'
 
@@ -60,4 +62,4 @@ except Exception as ex:
     template = "An exception of type {0} occured. Messsage:\n{1!r}"
     message = template.format(type(ex).__name__, ex.args)
     print message
-
+    traceback.print_exc()

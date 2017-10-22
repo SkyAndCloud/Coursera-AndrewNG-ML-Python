@@ -19,5 +19,5 @@ def gradientFunction(theta, X, y):
 
 
 # =============================================================
-
+    grad = X.T.dot(sigmoid(X.dot(theta)) - y) / float(m)
     return grad

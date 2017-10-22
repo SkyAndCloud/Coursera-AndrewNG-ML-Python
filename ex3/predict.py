@@ -1,6 +1,5 @@
 import numpy as np
-
-from ex2.sigmoid import sigmoid
+from sigmoid import sigmoid
 
 def predict(Theta1, Theta2, X):
     """ outputs the predicted label of X given the
@@ -8,9 +7,9 @@ def predict(Theta1, Theta2, X):
     """
 
 # Useful values
-    m, _ = X.shape
-    num_labels, _ = Theta2.shape
-
+    m = X.shape[0]
+    num_labels = Theta2.shape[0]
+   
 # ====================== YOUR CODE HERE ======================
 # Instructions: Complete the following code to make predictions using
 #               your learned neural network. You should set p to a 
@@ -23,6 +22,11 @@ def predict(Theta1, Theta2, X):
 #
 
 # =========================================================================
+    X = np.column_stack((np.ones((m, 1)), X))
+    a2 = sigmoid(X.dot(Theta1.T))
+    a2 = np.column_stack((np.ones((m, 1)), a2))
+    a3 = sigmoid(a2.dot(Theta2.T))
+    p = np.argmax(a3, axis=1)
 
     return p + 1        # add 1 to offset index of maximum in A row
 

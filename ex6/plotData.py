@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
+sys.path.append('..')
 from show import show
 def plotData(X, y):
     """plots the data points with + for the positive examples

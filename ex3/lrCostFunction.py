@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from ex2.costFunctionReg import costFunctionReg
 
 def lrCostFunction(theta, X, y, Lambda):
@@ -20,8 +22,8 @@ def lrCostFunction(theta, X, y, Lambda):
 #       the cost function and gradient computations. 
 #
 
-
+    J = costFunctionReg(theta, X, y, Lambda)
 
     # =============================================================
-
+   
     return J

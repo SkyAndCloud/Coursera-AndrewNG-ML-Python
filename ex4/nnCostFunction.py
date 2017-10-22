@@ -1,5 +1,5 @@
 import numpy as np
-
+import pandas as pd
 from ex2.sigmoid import sigmoid
 from sigmoidGradient import sigmoidGradient
 
@@ -60,9 +60,19 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size, num_labels, X
 #               the regularization separately and then add them to Theta1_grad
 #               and Theta2_grad from Part 2.
 #
+    y_categorical = pd.get_dummies(y.ravel()).as_matrix() 
 
-
-
+    a1 = np.column_stack((np.ones((m, 1)), X))
+    z2 = a1.dot(Theta1.T)
+    a2 = np.column_stack((np.ones((z2.shape[0], 1)), sigmoid(z2)))
+    a3 = sigmoid(a2.dot(Theta2.T))
+    J = np.sum(np.log(a3) * y_categorical + np.log(1 - a3) * (1 - y_categorical)) / float(-m) \
+            + Lambda * (np.sum(np.square(Theta1[:,1:])) + np.sum(np.square(Theta2[:,1:]))) / (2 * m)
+    
+    a3_grad = a3 - y_categorical
+    Theta2_grad = a3_grad.T.dot(a2) / m + Lambda * np.column_stack((np.zeros((Theta2.shape[0], 1)), Theta2[:, 1:])) / m
+    a2_grad = (a3_grad).dot(Theta2[:,1:]) * sigmoidGradient(z2)
+    Theta1_grad = a2_grad.T.dot(a1) / m + Lambda * np.column_stack((np.zeros((Theta1.shape[0], 1)), Theta1[:, 1:])) / m
     # -------------------------------------------------------------
 
     # =========================================================================

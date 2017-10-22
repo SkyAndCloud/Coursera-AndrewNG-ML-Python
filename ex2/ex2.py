@@ -10,6 +10,8 @@ from costFunction import costFunction
 from gradientFunction import gradientFunction
 from sigmoid import sigmoid
 from predict import predict
+import sys
+sys.path.append('..')
 from show import show
 
 ## Machine Learning Online Class - Exercise 2: Logistic Regression

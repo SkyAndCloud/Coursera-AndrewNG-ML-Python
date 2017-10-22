@@ -49,6 +49,9 @@ def emailFeatures(word_indices):
 #
 #
 
+    for idx in word_indices:
+    	# assign 1 to index idx in x
+    	x[int(idx)] = 1
 
 # =========================================================================
 

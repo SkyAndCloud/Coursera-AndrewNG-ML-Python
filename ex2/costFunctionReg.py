@@ -1,5 +1,5 @@
 from costFunction import costFunction
-
+import numpy as np
 
 def costFunctionReg(theta, X, y, Lambda):
     """
@@ -18,5 +18,6 @@ def costFunctionReg(theta, X, y, Lambda):
 #               derivatives of the cost w.r.t. each parameter in theta
 
 # =============================================================
+    J = Lambda * np.sum(np.square(theta[1:])) / float(2 * m) + costFunction(theta, X, y)
 
     return J

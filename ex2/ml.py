@@ -4,72 +4,109 @@ from pandas import Series
 from mpl_toolkits.mplot3d import axes3d
 
 
-def plotData(X,y):
-    pos = X[np.where(y==1,True,False).flatten()]
-    neg = X[np.where(y==0,True,False).flatten()]
-    plt.plot(pos[:,0], pos[:,1], '+', markersize=7, markeredgecolor='black', markeredgewidth=2)
-    plt.plot(neg[:,0], neg[:,1], 'o', markersize=7, markeredgecolor='black', markerfacecolor='yellow')
+def plotData(X, y):
+#PLOTDATA Plots the data points X and y into a new figure 
+#   PLOTDATA(x,y) plots the data points with + for the positive examples
+#   and o for the negative examples. X is assumed to be a Mx2 matrix.
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+# ====================== YOUR CODE HERE ======================
+# Instructions: Plot the positive and negative examples on a
+#               2D plot, using the option 'k+' for the positive
+#               examples and 'ko' for the negative examples.
+#
+
+    # Find Indices of Positive and Negative Examples
+    pos = np.where(y==1)
+    neg = np.where(y==0)
+
+    # plot! [0] indexing at end necessary for proper legend creation in ex2.py
+    p1 = plt.plot(X[pos,0], X[pos,1], marker='+', markersize=9, color='k')[0]
+    p2 = plt.plot(X[neg,0], X[neg,1], marker='o', markersize=7, color='y')[0]
+
+
+    return plt, p1, p2
 
 def plotDecisionBoundary(theta, X, y):
-    """
-    Plots the data points X and y into a new figure with the decision boundary defined by theta
-      PLOTDECISIONBOUNDARY(theta, X,y) plots the data points with + for the
-      positive examples and o for the negative examples. X is assumed to be
-      a either
-      1) Mx3 matrix, where the first column is an all-ones column for the
-         intercept.
-      2) MxN, N>3 matrix, where the first column is all-ones
-    """
+#PLOTDECISIONBOUNDARY Plots the data points X and y into a new figure with
+#the decision boundary defined by theta
+#   PLOTDECISIONBOUNDARY(theta, X,y) plots the data points with + for the 
+#   positive examples and o for the negative examples. X is assumed to be 
+#   a either 
+#   1) Mx3 matrix, where the first column is an all-ones column for the 
+#      intercept.
+#   2) MxN, N>3 matrix, where the first column is all-ones
+
+    import matplotlib.pyplot as plt
+    import numpy as np
 
     # Plot Data
-    plt.figure()
-    plotData(X[:,1:], y)
+    fig = plt.figure()
+
+    plt, p1, p2 = plotData(X[:,1:3], y)
 
     if X.shape[1] <= 3:
         # Only need 2 points to define a line, so choose two endpoints
-        plot_x = np.array([min(X[:, 2]),  max(X[:, 2])])
+        plot_x = np.array([min(X[:,1])-2,  max(X[:,1])+2])
 
         # Calculate the decision boundary line
         plot_y = (-1./theta[2])*(theta[1]*plot_x + theta[0])
 
         # Plot, and adjust axes for better viewing
-        plt.plot(plot_x, plot_y)
+        p3 = plt.plot(plot_x, plot_y)
+        
+        # Legend, specific for the exercise
+        plt.legend((p1, p2, p3[0]), ('Admitted', 'Not Admitted', 'Decision Boundary'), numpoints=1, handlelength=0.5)
 
+        plt.axis([30, 100, 30, 100])
+
+        plt.show(block=False)
     else:
         # Here is the grid range
         u = np.linspace(-1, 1.5, 50)
         v = np.linspace(-1, 1.5, 50)
-        z = [
-                np.array([mapFeature2(u[i], v[j]).dot(theta) for i in range(len(u))])
-                for j in range(len(v))
-            ]
-        plt.contour(u,v,z, levels=[0.0])
 
-    # Legend, specific for the exercise
-    # axis([30, 100, 30, 100])
+        z = np.zeros(( len(u), len(v) ))
+        # Evaluate z = theta*x over the grid
+        for i in xrange(len(u)):
+            for j in xrange(len(v)):
+                z[i,j] = np.dot(mapFeature(np.array([u[i]]), np.array([v[j]])),theta)
+        z = np.transpose(z) # important to transpose z before calling contour
 
-def mapFeature(X, degree=6):
-    """
-    Feature mapping function to polynomial features
+        # Plot z = 0
+        # Notice you need to specify the level 0
+        # we get collections[0] so that we can display a legend properly
+        p3 = plt.contour(u, v, z, levels=[0], linewidth=2).collections[0]
+        
+        # Legend, specific for the exercise
+        plt.legend((p1,p2, p3),('y = 1', 'y = 0', 'Decision Boundary'), numpoints=1, handlelength=0)
 
-    MAPFEATURE(X, degree) maps the two input features
-    to quadratic features used in the regularization exercise.
+        plt.show(block=False)
 
-    Returns a new feature array with more features, comprising of
-    X1, X2, X1.^2, X2.^2, X1*X2, X1*X2.^2, etc..
-    """
-    quads = Series([X.iloc[0]**(i-j) * X.iloc[1]**j for i in range(1,degree+1) for j in range(i+1)])
-    return Series([1]).append([X,quads])
 
-def mapFeature2(X1, X2, degree=6):
-    """
-    Feature mapping function to polynomial features
+def mapFeature(X1, X2):
+# MAPFEATURE Feature mapping function to polynomial features
+#
+#   MAPFEATURE(X1, X2) maps the two input features
+#   to quadratic features used in the regularization exercise.
+#
+#   Returns a new feature array with more features, comprising of 
+#   X1, X2, X1.^2, X2.^2, X1*X2, X1*X2.^2, etc..
+#   for a total of 1 + 2 + ... + (degree+1) = ((degree+1) * (degree+2)) / 2 columns
+#
+#   Inputs X1, X2 must be the same size
+#
 
-    MAPFEATURE(X, degree) maps the two input features
-    to quadratic features used in the regularization exercise.
+    import numpy as np
 
-    Returns a new feature array with more features, comprising of
-    X1, X2, X1.^2, X2.^2, X1*X2, X1*X2.^2, etc..
-    """
-    quads = Series([X1**(i-j) * X2**j for i in range(1,degree+1) for j in range(i+1)])
-    return Series([1]).append([Series(X1), Series(X2), quads])
+    degree = 6
+    out = np.ones(( X1.shape[0], sum(range(degree + 2)) )) # could also use ((degree+1) * (degree+2)) / 2 instead of sum
+    curr_column = 1
+    for i in xrange(1, degree + 1):
+        for j in xrange(i+1):
+            out[:,curr_column] = np.power(X1,i-j) * np.power(X2,j)
+            curr_column += 1
+
+    return out
